@@ -1,7 +1,4 @@
-//localStorage.removeItem("people");
-//localStorage.removeItem("likes");
-//localStorage.removeItem("dislikes");
-
+//localStorage.clear();
 function logToConsole(people) {
     console.log(people); // works fine
     console.log(people[0]); // returns undefined
@@ -24,8 +21,10 @@ fetch('https://randomuser.me/api/?results=10')
 .then(function(data){
     for(i=0; i<10; i++){
         let person = data.results[i];
+        if(dislikes.includes(person.login.uuid) || likes.includes(person.login.uuid) ){
+            continue;
+        }else{
         let x = {
-            
             name: person.name.first + " " +person.name.last,
             picture: person.picture.large,
             age: person.dob.age,
@@ -33,7 +32,7 @@ fetch('https://randomuser.me/api/?results=10')
             id: person.login.uuid
         }
         people.push(x);
-    }
+    }}
     lengte = people.length;
     logToConsole(people);
     judge();
@@ -77,10 +76,8 @@ function judge(){
         showPeople();
         localStorage.setItem("people", JSON.stringify(people));
         localStorage.setItem("likes", JSON.stringify(likes));
-        }
-    }
-    })
-    document.getElementById("skipclick").addEventListener("click", function(){
+        }}})
+document.getElementById("skipclick").addEventListener("click", function(){
         if(people.length<=1){
         dislikes.push(people[0]);
         console.log(dislikes);
@@ -104,10 +101,7 @@ function judge(){
         showPeople();
         localStorage.setItem("people", JSON.stringify(people));
         localStorage.setItem("dislikes", JSON.stringify(dislikes));
-        }
-    }
-    })
-}
+        }}})}
 document.getElementById("clickforlikes").addEventListener('click', function(){
     document.getElementById("yourdislikes").innerHTML="";
     document.getElementById("yourlikes").innerHTML="";
@@ -120,16 +114,12 @@ document.getElementById("clickforlikes").addEventListener('click', function(){
             for(i=0;i<ch.length;i++){
                 let z = i;
                 ch[i].addEventListener('click', function(){
-                    likes = JSON.parse(localStorage.getItem("likes"));
                     likes.push(dislikes[z]);
                     localStorage.setItem("likes", JSON.stringify(likes));
                     dislikes.splice(z, 1);
                     localStorage.setItem("dislikes", JSON.stringify(dislikes));
                     document.querySelectorAll('.yourlikes')[0].style.left = "100%";
-                })
-            }
-        }
-    }
+                })}}}
     for(v=0;v<likes.length;v++){
         if(likes.length>0){
             let ChangeThat = likes[v];
@@ -138,17 +128,13 @@ document.getElementById("clickforlikes").addEventListener('click', function(){
             for(o=0; o<co.length; o++){
                 let q = o;
                 co[q].addEventListener('click', function(){
-                    dislikes = JSON.parse(localStorage.getItem("dislikes"));
+                    console.log(dislikes)
                     dislikes.push(likes[q]);
                     localStorage.setItem("dislikes", JSON.stringify(dislikes));
                     likes.splice(q, 1);
                     localStorage.setItem("likes", JSON.stringify(likes));
                     document.querySelectorAll('.yourlikes')[0].style.left = "100%";
-                })
-            }
-        }
-    }
-})
-document.getElementById("goAwayclick").addEventListener('click', function(){
+                })}}}})
+    document.getElementById("goAwayclick").addEventListener('click', function(){
     document.querySelectorAll('.yourlikes')[0].style.left = "100%";
 })
